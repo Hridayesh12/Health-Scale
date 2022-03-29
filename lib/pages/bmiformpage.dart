@@ -166,20 +166,20 @@ class _BmiFormPageState extends State<BmiFormPage> {
             fontWeight: FontWeight.w500,
           ),
         ));
-    final diagnose = Material(
-        elevation: 5,
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.redAccent,
-        child: Text(
-          _bmi == 0
-              ? "Enter values for BMI Calc"
-              : "BMI : ${_result.toStringAsFixed(4)}",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 19.4,
-            fontWeight: FontWeight.w500,
-          ),
-        ));
+    // final diagnose = Material(
+    //     elevation: 5,
+    //     borderRadius: BorderRadius.circular(30),
+    //     color: Colors.redAccent,
+    //     child: Text(
+    //       _bmi == 0
+    //           ? "Enter values for BMI Calc"
+    //           : "BMI : ${_result.toStringAsFixed(4)}",
+    //       style: TextStyle(
+    //         color: Colors.white,
+    //         fontSize: 19.4,
+    //         fontWeight: FontWeight.w500,
+    //       ),
+    //     ));
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -208,18 +208,8 @@ class _BmiFormPageState extends State<BmiFormPage> {
                               backButton,
                               SizedBox(height: 15),
                               resultSection,
-                              SizedBox(height: 15),
-                              diagnose,
-                              if(_bmi == 0)
-                                 Text("Enter values")
-                              else if(_bmi<18.5)
-                                 Text("Underweight")
-                              else if(_bmi>=18.5 && _bmi <=24.9)
-                                 Text("Normal Weight")
-                              else if(_bmi>=25.0 && _bmi<=29.9)
-                                 Text("Over weight")
-                              else
-                                 Text("Obese")
+                              // SizedBox(height: 15),
+                              // diagnose,
                             ])),
                   ))),
             
