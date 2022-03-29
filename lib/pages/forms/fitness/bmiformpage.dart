@@ -16,6 +16,7 @@ class _BmiFormPageState extends State<BmiFormPage> {
   double _result = 0.00;
   double _bmi = 0.0;
   DateTime date = DateTime(1900);
+  String res = "Unders";
   @override
   Widget build(BuildContext context) {
     final genderField = Column(
@@ -122,8 +123,14 @@ class _BmiFormPageState extends State<BmiFormPage> {
           double heightSquare = height * height;
           double result = weight / heightSquare;
           _result = result;
-          print(_result);
-          setState(() {});
+
+          if (_bmi < 18.5) res="Under Weight";
+          else if (_bmi >= 18.5 && _bmi <= 24.9) res="Normal Weight";
+          else if (_bmi >= 25.0 && _bmi <= 29.9) res="Over Weight";
+          else res="Obese";
+          print(res);
+          setState(() {
+          });
         },
         child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
       ),
@@ -151,7 +158,12 @@ class _BmiFormPageState extends State<BmiFormPage> {
     final resultSection = Material(
         elevation: 5,
         borderRadius: BorderRadius.circular(30),
-        color: Colors.redAccent,
+        color:  Color.fromRGBO(61, 96, 152, 1),
+        child: MaterialButton(
+        onPressed: () {},
+          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          minWidth: MediaQuery.of(context).size.width,
+
         child: Text(
           _result == null ? "Enter Value" : "BMI : ${_result.toStringAsFixed(4)}",
           style: TextStyle(
@@ -159,19 +171,38 @@ class _BmiFormPageState extends State<BmiFormPage> {
             fontSize: 19.4,
             fontWeight: FontWeight.w500,
           ),
+        ),
         ));
-    final diagnose = Material(
+    final resul = Material(
         elevation: 5,
         borderRadius: BorderRadius.circular(30),
-        color: Colors.redAccent,
-        child: Text(
-          _bmi == 0 ? "Enter values for BMI Calc" : "BMI : ${_result.toStringAsFixed(4)}",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 19.4,
-            fontWeight: FontWeight.w500,
+        color:  Colors.white,
+        child: MaterialButton(
+          onPressed: () {},
+          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          minWidth: MediaQuery.of(context).size.width,
+
+          child: Text(
+            res == "Unders" ? "Enter Value" : "${res}",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 19.4,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ));
+    // final diagnose = Material(
+    //     elevation: 5,
+    //     borderRadius: BorderRadius.circular(30),
+    //     color: Colors.redAccent,
+    //     child: Text(
+    //       _bmi == 0 ? "Enter values for BMI Calc" : "BMI : ${_result.toStringAsFixed(4)}",
+    //       style: TextStyle(
+    //         color: Colors.white,
+    //         fontSize: 19.4,
+    //         fontWeight: FontWeight.w500,
+    //       ),
+    //     ));
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -197,9 +228,9 @@ class _BmiFormPageState extends State<BmiFormPage> {
                           SizedBox(height: 15),
                           resultSection,
                           SizedBox(height: 15),
-                          diagnose,
-                          if (_bmi == 0) Text("Enter values") else if (_bmi < 18.5) Text("Underweight") else if (_bmi >= 18.5 && _bmi <= 24.9) Text("Normal Weight") else if (_bmi >= 25.0 && _bmi <= 29.9) Text("Over weight") else Text("Obese")
-                        ])),
+                          resul
+                          //diagnose,
+                           ])),
                   ))),
         ));
   }

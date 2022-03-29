@@ -8,6 +8,7 @@ import 'bodyfatpage.dart';
 import 'macroformpage.dart';
 import 'caloriecalcform.dart';
 import 'proteinform.dart';
+import 'tdeeformpage.dart';
 
 class WelcomePage extends StatefulWidget {
   WelcomePage({key}) : super(key: key);
@@ -32,9 +33,15 @@ class _WelcomePageState extends State<WelcomePage> {
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => BmiFormPage()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => BmiFormPage()));
         },
-        child: Text("BMI", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("BMI",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
     final button2 = Material(
@@ -45,9 +52,15 @@ class _WelcomePageState extends State<WelcomePage> {
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => BmrFormPage()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => BmrFormPage()));
         },
-        child: Text("BMR", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("BMR",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
     final button3 = Material(
@@ -58,9 +71,15 @@ class _WelcomePageState extends State<WelcomePage> {
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => IdlWtFormPage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => IdlWtFormPage()));
         },
-        child: Text("IdealWeight", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("IdealWeight",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
     final button4 = Material(
@@ -71,9 +90,15 @@ class _WelcomePageState extends State<WelcomePage> {
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => BodyFatFormPage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => BodyFatFormPage()));
         },
-        child: Text("Body fat", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("Body fat",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
     final button5 = Material(
@@ -84,9 +109,15 @@ class _WelcomePageState extends State<WelcomePage> {
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MacroFormPage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => MacroFormPage()));
         },
-        child: Text("Macro", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("Macro",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
     final button6 = Material(
@@ -97,9 +128,15 @@ class _WelcomePageState extends State<WelcomePage> {
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => CalorieFormPage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CalorieFormPage()));
         },
-        child: Text("Calorie", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("Calorie",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
     final button7 = Material(
@@ -110,9 +147,34 @@ class _WelcomePageState extends State<WelcomePage> {
         minWidth: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ProteinFormPage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ProteinFormPage()));
         },
-        child: Text("Protein", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("Protein",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
+      ),
+    );
+    final button8 = Material(
+      elevation: 5,
+      borderRadius: BorderRadius.circular(30),
+      color: Colors.redAccent,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width / 2,
+        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => TdeeFormPage()));
+        },
+        child: Text("TDEE",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
     return Scaffold(
@@ -137,6 +199,8 @@ class _WelcomePageState extends State<WelcomePage> {
                       button6,
                       SizedBox(height: 5),
                       button7,
+                      SizedBox(height: 5),
+                      button8,
                     ]),
                   ))),
         ));

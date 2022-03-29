@@ -10,9 +10,11 @@ class BmiFormPage extends StatefulWidget {
 class _BmiFormPageState extends State<BmiFormPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController ageController = new TextEditingController();
-  final TextEditingController heightController = new TextEditingController();
-  final TextEditingController weightController = new TextEditingController();
+  final TextEditingController _heightController = new TextEditingController();
+  final TextEditingController _weightController = new TextEditingController();
   int gender = 1;
+  double _result = 0.00;
+  double _bmi = 0.0;
   DateTime date = DateTime(1900);
   @override
   Widget build(BuildContext context) {
@@ -49,27 +51,27 @@ class _BmiFormPageState extends State<BmiFormPage> {
         ])
       ],
     );
-    final dobField = TextFormField(
-      autofocus: false,
-      controller: heightController,
-      keyboardType: TextInputType.number,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some text';
-        }
-        return null;
-      },
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-          labelText: 'Enter Age',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          )),
-    );
+    // final dobField = TextFormField(
+    //   autofocus: false,
+    //   controller: heightController,
+    //   keyboardType: TextInputType.number,
+    //   validator: (value) {
+    //     if (value == null || value.isEmpty) {
+    //       return 'Please enter some text';
+    //     }
+    //     return null;
+    //   },
+    //   textInputAction: TextInputAction.next,
+    //   decoration: InputDecoration(
+    //       contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+    //       labelText: 'Enter Age',
+    //       border: OutlineInputBorder(
+    //         borderRadius: BorderRadius.circular(10),
+    //       )),
+    // );
     final height = TextFormField(
       autofocus: false,
-      controller: heightController,
+      controller: _heightController,
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -87,11 +89,14 @@ class _BmiFormPageState extends State<BmiFormPage> {
     );
     final weight = TextFormField(
       autofocus: false,
-      controller: weightController,
+      controller: _weightController,
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter some text';
+        }
+        if (value == 0) {
+          print('Please enter proper values');
         }
         return null;
       },
@@ -110,8 +115,22 @@ class _BmiFormPageState extends State<BmiFormPage> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {},
-        child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        onPressed: () {
+          double height = double.parse(_heightController.text) / 100;
+          double weight = double.parse(_weightController.text);
+
+          double heightSquare = height * height;
+          double result = weight / heightSquare;
+          _result = result;
+          print(_result);
+          setState(() {});
+        },
+        child: Text("Calculate",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
     final backButton = Material(
@@ -122,11 +141,46 @@ class _BmiFormPageState extends State<BmiFormPage> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => WelcomePage()));
         },
-        child: Text("Back", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("Back",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
+    final resultSection = Material(
+        elevation: 5,
+        borderRadius: BorderRadius.circular(30),
+        color: Colors.redAccent,
+        child: Text(
+          _result == 0.0
+              ? "Enter Value"
+              : "BMI : ${_result.toStringAsFixed(4)}",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 19.4,
+            fontWeight: FontWeight.w500,
+          ),
+        ));
+    // final diagnose = Material(
+    //     elevation: 5,
+    //     borderRadius: BorderRadius.circular(30),
+    //     color: Colors.redAccent,
+    //     child: Text(
+    //       _bmi == 0
+    //           ? "Enter values for BMI Calc"
+    //           : "BMI : ${_result.toStringAsFixed(4)}",
+    //       style: TextStyle(
+    //         color: Colors.white,
+    //         fontSize: 19.4,
+    //         fontWeight: FontWeight.w500,
+    //       ),
+    //     ));
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
@@ -137,20 +191,30 @@ class _BmiFormPageState extends State<BmiFormPage> {
                     padding: const EdgeInsets.all(30.0),
                     child: Form(
                         key: _formKey,
-                        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-                          genderField,
-                          SizedBox(height: 10),
-                          dobField,
-                          SizedBox(height: 10),
-                          height,
-                          SizedBox(height: 15),
-                          weight,
-                          SizedBox(height: 15),
-                          calculateButton,
-                          SizedBox(height: 15),
-                          backButton,
-                        ])),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              genderField,
+                              SizedBox(height: 10),
+                              //dobField,
+                              SizedBox(height: 10),
+                              height,
+                              SizedBox(height: 15),
+                              weight,
+                              SizedBox(height: 15),
+                              calculateButton,
+                              SizedBox(height: 15),
+                              backButton,
+                              SizedBox(height: 15),
+                              resultSection,
+                              // SizedBox(height: 15),
+                              // diagnose,
+                            ])),
                   ))),
+            
         ));
   }
+
+  void calculateBMI() {}
 }
