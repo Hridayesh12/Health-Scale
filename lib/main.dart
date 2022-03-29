@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pages/homepage.dart';
+import 'pages/splashpage.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,12 +8,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // Application name
-      title: 'BmiCalc',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: WelcomePage(),
-    );
+        title: "Health-Scale",
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: SplashPage());
   }
 }
