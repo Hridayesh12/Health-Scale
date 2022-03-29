@@ -9,10 +9,11 @@ class BmrFormPage extends StatefulWidget {
 
 class _BmrFormPageState extends State<BmrFormPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController ageController = new TextEditingController();
-  final TextEditingController heightController = new TextEditingController();
-  final TextEditingController weightController = new TextEditingController();
+  final TextEditingController _ageController = new TextEditingController();
+  final TextEditingController _heightController = new TextEditingController();
+  final TextEditingController _weightController = new TextEditingController();
   int gender = 1;
+  double _bmr = 0.0;
   DateTime date = DateTime(1900);
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,7 @@ class _BmrFormPageState extends State<BmrFormPage> {
     );
     final dobField = TextFormField(
       autofocus: false,
-      controller: heightController,
+      controller: _ageController,
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -69,7 +70,7 @@ class _BmrFormPageState extends State<BmrFormPage> {
     );
     final height = TextFormField(
       autofocus: false,
-      controller: heightController,
+      controller: _heightController,
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -87,7 +88,7 @@ class _BmrFormPageState extends State<BmrFormPage> {
     );
     final weight = TextFormField(
       autofocus: false,
-      controller: weightController,
+      controller: _weightController,
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -110,8 +111,39 @@ class _BmrFormPageState extends State<BmrFormPage> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {},
-        child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        onPressed: () {
+          if (gender == 1) {
+            print("ho ho");
+            print(gender);
+            double height = double.parse(_heightController.text);
+            double weight = double.parse(_weightController.text);
+            double age = double.parse(_ageController.text);
+            double bmr = 10.0 * weight + 6.25 * height - 5 * age + 5;
+            _bmr = bmr;
+            print(_bmr);
+            setState(() {});
+          } else {
+            print("are you approaching me");
+            print(gender);
+            double height = double.parse(_heightController.text);
+            double weight = double.parse(_weightController.text);
+            double age = double.parse(_ageController.text);
+            print(height);
+            print(weight);
+            print(age);
+            double bmr = 10.0 * weight + 6.25 * height - 5 * age - 161;
+            _bmr = bmr;
+            print(_bmr);
+            setState(() {});
+          }
+          print(gender);
+        },
+        child: Text("Calculate",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
     final backButton = Material(
@@ -122,11 +154,29 @@ class _BmrFormPageState extends State<BmrFormPage> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => WelcomePage()));
         },
-        child: Text("Back", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("Back",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
+    final resultSection = Material(
+        elevation: 5,
+        borderRadius: BorderRadius.circular(30),
+        color: Colors.redAccent,
+        child: Text(
+          _bmr == null ? "Enter Value" : "BMR : $_bmr",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 19.4,
+            fontWeight: FontWeight.w500,
+          ),
+        ));
     return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
@@ -137,19 +187,24 @@ class _BmrFormPageState extends State<BmrFormPage> {
                     padding: const EdgeInsets.all(30.0),
                     child: Form(
                         key: _formKey,
-                        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-                          genderField,
-                          SizedBox(height: 10),
-                          dobField,
-                          SizedBox(height: 10),
-                          height,
-                          SizedBox(height: 15),
-                          weight,
-                          SizedBox(height: 15),
-                          calculateButton,
-                          SizedBox(height: 15),
-                          backButton,
-                        ])),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              genderField,
+                              SizedBox(height: 10),
+                              dobField,
+                              SizedBox(height: 10),
+                              height,
+                              SizedBox(height: 15),
+                              weight,
+                              SizedBox(height: 15),
+                              calculateButton,
+                              SizedBox(height: 15),
+                              backButton,
+                              SizedBox(height: 15),
+                              resultSection,
+                            ])),
                   ))),
         ));
   }

@@ -1,22 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'homepage.dart';
-import 'dart:math';
 
-class BodyFatFormPage extends StatefulWidget {
+class TdeeFormPage extends StatefulWidget {
   @override
-  _BodyFatFormPageState createState() => _BodyFatFormPageState();
+  _TdeeFormPageState createState() => _TdeeFormPageState();
 }
 
-class _BodyFatFormPageState extends State<BodyFatFormPage> {
+class _TdeeFormPageState extends State<TdeeFormPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController ageController = new TextEditingController();
   final TextEditingController heightController = new TextEditingController();
   final TextEditingController weightController = new TextEditingController();
-  final TextEditingController neckController = new TextEditingController();
-  final TextEditingController waistController = new TextEditingController();
+  List activityList = [
+    "Basal Metabollic Rate",
+    "Sedentary: Little Or No Exercise",
+    "Light:Exercise 1-3times/week",
+    "Moderately Active:Exercise 4-5times/week",
+    "Very Active:Exercise 6-7times/week",
+    "Extra Active:Very Intense Exercise Daily"
+  ];
+  String valueForActivity = "Basal Metabollic Rate";
+  // List goalList = [
+  //   "Maintain Weight",
+  //   "Mild Weight Loss 0.5lb/week",
+  //   "Weight Loss 1lb/week",
+  //   "Extreme Weight Loss 2lb/week",
+  //   "Mild Weight Gain 0.5lb/week",
+  //   "Weight Gain 1lb/week",
+  //   "Extreme Weight Gain 2lb/week"
+  // ];
+  // String valueForGoal = "Maintain Weight";
   int gender = 1;
-  double bfp = 0.0;
+  double _bmr = 0.0;
+  double _tdee = 0.0;
   DateTime date = DateTime(1900);
   @override
   Widget build(BuildContext context) {
@@ -107,42 +124,32 @@ class _BodyFatFormPageState extends State<BodyFatFormPage> {
             borderRadius: BorderRadius.circular(10),
           )),
     );
-    // final neck = TextFormField(
-    //   autofocus: false,
-    //   controller: neckController,
-    //   keyboardType: TextInputType.number,
-    //   validator: (value) {
-    //     if (value == null || value.isEmpty) {
-    //       return 'Please enter some text';
-    //     }
-    //     return null;
-    //   },
-    //   textInputAction: TextInputAction.next,
-    //   decoration: InputDecoration(
-    //       contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-    //       labelText: 'Neck in cm',
-    //       border: OutlineInputBorder(
-    //         borderRadius: BorderRadius.circular(10),
-    //       )),
-    // );
-    // final waist = TextFormField(
-    //   autofocus: false,
-    //   controller: waistController,
-    //   keyboardType: TextInputType.number,
-    //   validator: (value) {
-    //     if (value == null || value.isEmpty) {
-    //       return 'Please enter some text';
-    //     }
-    //     return null;
-    //   },
-    //   textInputAction: TextInputAction.next,
-    //   decoration: InputDecoration(
-    //       contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-    //       labelText: 'Waist in cm',
-    //       border: OutlineInputBorder(
-    //         borderRadius: BorderRadius.circular(10),
-    //       )),
-    // );
+    final activity = Container(
+      child: DropdownButton(
+        value: valueForActivity.isNotEmpty ? valueForActivity : null,
+        hint: Text("Choose One Activity"),
+        dropdownColor: Colors.lightBlue.shade200,
+        icon: Icon(Icons.arrow_drop_down),
+        iconSize: 17,
+        isExpanded: true,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 12,
+        ),
+        onChanged: (newValue) {
+          setState(() {
+            valueForActivity = newValue as String;
+          });
+        },
+        items: activityList.map((valueItem) {
+          return DropdownMenuItem(
+            value: valueItem,
+            child: Text(valueItem),
+          );
+        }).toList(),
+      ),
+    );
+
     final calculateButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
@@ -152,42 +159,68 @@ class _BodyFatFormPageState extends State<BodyFatFormPage> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           if (gender == 1) {
-            print("ho ho");
-            print(gender);
-            double height = double.parse(heightController.text) / 100;
+            double height = double.parse(heightController.text);
             double weight = double.parse(weightController.text);
             double age = double.parse(ageController.text);
-            double heightt = height * height;
-            double bmi = weight / (heightt);
-            double bf = 0.0;
-            if (age >= 1 && age < 18) {
-              bf = 1.51 * bmi - 0.70 * age + 1.4;
+            double bmr = 10.0 * weight + 6.25 * height - 5 * age + 5;
+            _bmr = bmr;
+            print(_bmr);
+            print(valueForActivity);
+            if (valueForActivity == "Basal Metabollic Rate") {
+              _tdee = 0.0;
+            } else if (valueForActivity == "Sedentary: Little Or No Exercise") {
+              _tdee = bmr * 1.2;
+              print(_tdee);
+            } else if (valueForActivity == "Light:Exercise 1-3times/week") {
+              _tdee = bmr * 1.375;
+              print(_tdee);
+            } else if (valueForActivity ==
+                "Moderately Active:Exercise 4-5times/week") {
+              _tdee = bmr * 1.55;
+              print(_tdee);
+            } else if (valueForActivity ==
+                "Very Active:Exercise 6-7times/week") {
+              _tdee = bmr * 1.725;
+              print(_tdee);
             } else {
-              bf = 1.20 * bmi + 0.23 * age - 16.2;
+              _tdee = bmr * 1.9;
+              print(_tdee);
             }
-            //double bf = (495 / (1.0324 - 0.19077 * log(waist - neck) +  0.15456 * log(height))) - 450;
-            bfp = bf;
-            print(bfp);
             setState(() {});
           } else {
-            print("ho ho");
-            print(gender);
-            double height = double.parse(heightController.text) / 100;
+            double height = double.parse(heightController.text);
             double weight = double.parse(weightController.text);
             double age = double.parse(ageController.text);
-            double heightt = height * height;
-            double bmi = weight / (heightt);
-            double bf = 0.0;
-            if (age >= 1 && age < 18) {
-              bf = 1.51 * bmi - 0.70 * age - 2.2;
+            print(height);
+            print(weight);
+            print(age);
+            double bmr = 10.0 * weight + 6.25 * height - 5 * age - 161;
+            _bmr = bmr;
+            print(_bmr);
+            print(valueForActivity);
+            if (valueForActivity == "Basal Metabollic Rate") {
+              _tdee = 0.0;
+            } else if (valueForActivity == "Sedentary: Little Or No Exercise") {
+              _tdee = bmr * 1.2;
+              print(_tdee);
+            } else if (valueForActivity == "Light:Exercise 1-3times/week") {
+              _tdee = bmr * 1.375;
+              print(_tdee);
+            } else if (valueForActivity ==
+                "Moderately Active:Exercise 4-5times/week") {
+              _tdee = bmr * 1.55;
+              print(_tdee);
+            } else if (valueForActivity ==
+                "Very Active:Exercise 6-7times/week") {
+              _tdee = bmr * 1.725;
+              print(_tdee);
             } else {
-              bf = 1.20 * bmi + 0.23 * age - 5.4;
+              _tdee = bmr * 1.9;
+              print(_tdee);
             }
-            //double bf = (495 / (1.0324 - 0.19077 * log(waist - neck) +  0.15456 * log(height))) - 450;
-            bfp = bf;
-            print(bfp);
             setState(() {});
           }
+          print(gender);
         },
         child: Text("Calculate",
             textAlign: TextAlign.center,
@@ -197,18 +230,6 @@ class _BodyFatFormPageState extends State<BodyFatFormPage> {
                 fontWeight: FontWeight.bold)),
       ),
     );
-    final resultSection = Material(
-        elevation: 5,
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.redAccent,
-        child: Text(
-          bfp == null ? "Enter Value" : "BFP : $bfp",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 19.4,
-            fontWeight: FontWeight.w500,
-          ),
-        ));
     final backButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
@@ -228,6 +249,18 @@ class _BodyFatFormPageState extends State<BodyFatFormPage> {
                 fontWeight: FontWeight.bold)),
       ),
     );
+    final resultSection = Material(
+        elevation: 5,
+        borderRadius: BorderRadius.circular(30),
+        color: Colors.redAccent,
+        child: Text(
+          _tdee == 0.0 ? "Enter Value" : "TDEE : ${_tdee.toStringAsFixed(4)}",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 19.4,
+            fontWeight: FontWeight.w500,
+          ),
+        ));
     return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
@@ -249,10 +282,8 @@ class _BodyFatFormPageState extends State<BodyFatFormPage> {
                               height,
                               SizedBox(height: 15),
                               weight,
-                              // SizedBox(height: 15),
-                              // neck,
-                              // SizedBox(height: 15),
-                              // waist,
+                              SizedBox(height: 15),
+                              activity,
                               SizedBox(height: 15),
                               calculateButton,
                               SizedBox(height: 15),
