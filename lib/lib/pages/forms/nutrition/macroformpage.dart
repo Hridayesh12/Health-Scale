@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../dashboard.dart';
 
-class TdeeFormPage extends StatefulWidget {
+class MacroFormPage extends StatefulWidget {
   @override
-  _TdeeFormPageState createState() => _TdeeFormPageState();
+  _MacroFormPageState createState() => _MacroFormPageState();
 }
 
-class _TdeeFormPageState extends State<TdeeFormPage> {
+class _MacroFormPageState extends State<MacroFormPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController ageController = new TextEditingController();
   final TextEditingController heightController = new TextEditingController();
@@ -16,24 +16,23 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
     "Basal Metabollic Rate",
     "Sedentary: Little Or No Exercise",
     "Light:Exercise 1-3times/week",
-    "Moderately Active:Exercise 4-5times/week",
+    "Moderate:Exercise 4-5times/week",
+    "Active:Exercise 3-4times/week",
     "Very Active:Exercise 6-7times/week",
     "Extra Active:Very Intense Exercise Daily"
   ];
   String valueForActivity = "Basal Metabollic Rate";
-  // List goalList = [
-  //   "Maintain Weight",
-  //   "Mild Weight Loss 0.5lb/week",
-  //   "Weight Loss 1lb/week",
-  //   "Extreme Weight Loss 2lb/week",
-  //   "Mild Weight Gain 0.5lb/week",
-  //   "Weight Gain 1lb/week",
-  //   "Extreme Weight Gain 2lb/week"
-  // ];
-  // String valueForGoal = "Maintain Weight";
+  List goalList = [
+    "Maintain Weight",
+    "Mild Weight Loss 0.5lb/week",
+    "Weight Loss 1lb/week",
+    "Extreme Weight Loss 2lb/week",
+    "Mild Weight Gain 0.5lb/week",
+    "Weight Gain 1lb/week",
+    "Extreme Weight Gain 2lb/week"
+  ];
+  String valueForGoal = "Maintain Weight";
   int gender = 1;
-  double _bmr = 0.0;
-  double _tdee = 0.0;
   DateTime date = DateTime(1900);
   @override
   Widget build(BuildContext context) {
@@ -72,7 +71,7 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
     );
     final dobField = TextFormField(
       autofocus: false,
-      controller: ageController,
+      controller: heightController,
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -149,7 +148,31 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
         }).toList(),
       ),
     );
-
+    final goal = Container(
+      child: DropdownButton(
+        value: valueForGoal.isNotEmpty ? valueForGoal : null,
+        hint: Text("Choose One Activity"),
+        dropdownColor: Colors.lightBlue.shade200,
+        icon: Icon(Icons.arrow_drop_down),
+        iconSize: 17,
+        isExpanded: true,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 12,
+        ),
+        onChanged: (newValue) {
+          setState(() {
+            valueForGoal = newValue as String;
+          });
+        },
+        items: goalList.map((valueItem) {
+          return DropdownMenuItem(
+            value: valueItem,
+            child: Text(valueItem),
+          );
+        }).toList(),
+      ),
+    );
     final calculateButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
@@ -157,104 +180,25 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {
-          if (gender == 1) {
-            double height = double.parse(heightController.text);
-            double weight = double.parse(weightController.text);
-            double age = double.parse(ageController.text);
-            double bmr = 10.0 * weight + 6.25 * height - 5 * age + 5;
-            _bmr = bmr;
-            print(_bmr);
-            print(valueForActivity);
-            if (valueForActivity == "Basal Metabollic Rate") {
-              _tdee = 0.0;
-            } else if (valueForActivity == "Sedentary: Little Or No Exercise") {
-              _tdee = bmr * 1.2;
-              print(_tdee);
-            } else if (valueForActivity == "Light:Exercise 1-3times/week") {
-              _tdee = bmr * 1.375;
-              print(_tdee);
-            } else if (valueForActivity == "Moderately Active:Exercise 4-5times/week") {
-              _tdee = bmr * 1.55;
-              print(_tdee);
-            } else if (valueForActivity == "Very Active:Exercise 6-7times/week") {
-              _tdee = bmr * 1.725;
-              print(_tdee);
-            } else {
-              _tdee = bmr * 1.9;
-              print(_tdee);
-            }
-            setState(() {});
-          } else {
-            double height = double.parse(heightController.text);
-            double weight = double.parse(weightController.text);
-            double age = double.parse(ageController.text);
-            print(height);
-            print(weight);
-            print(age);
-            double bmr = 10.0 * weight + 6.25 * height - 5 * age - 161;
-            _bmr = bmr;
-            print(_bmr);
-            print(valueForActivity);
-            if (valueForActivity == "Basal Metabollic Rate") {
-              _tdee = 0.0;
-            } else if (valueForActivity == "Sedentary: Little Or No Exercise") {
-              _tdee = bmr * 1.2;
-              print(_tdee);
-            } else if (valueForActivity == "Light:Exercise 1-3times/week") {
-              _tdee = bmr * 1.375;
-              print(_tdee);
-            } else if (valueForActivity == "Moderately Active:Exercise 4-5times/week") {
-              _tdee = bmr * 1.55;
-              print(_tdee);
-            } else if (valueForActivity == "Very Active:Exercise 6-7times/week") {
-              _tdee = bmr * 1.725;
-              print(_tdee);
-            } else {
-              _tdee = bmr * 1.9;
-              print(_tdee);
-            }
-            setState(() {});
-          }
-          print(gender);
-        },
+        onPressed: () {},
         child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
-    final resultSection = Material(
-        elevation: 5,
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.redAccent,
-        child: Text(
-          _tdee == 0.0 ? "Enter Value" : "The estimated TDEE or body weight maintenance energy requirement is ${_tdee.toStringAsFixed(4)} Calories per day.",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 19.4,
-            fontWeight: FontWeight.w500,
-          ),
-        ));
-    final navbar = AppBar(
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        tooltip: 'Menu Icon',
+    final backButton = Material(
+      elevation: 5,
+      borderRadius: BorderRadius.circular(30),
+      color: Colors.redAccent,
+      child: MaterialButton(
+        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
         },
+        child: Text("Back", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
       ),
-      title: Text(
-        "Health Scale",
-        style: TextStyle(
-          fontSize: 23,
-          color: Colors.white,
-          fontFamily: 'Inter',
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      backgroundColor: Color.fromRGBO(61, 96, 152, 1),
     );
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: navbar,
         body: Center(
           child: SingleChildScrollView(
               child: Container(
@@ -274,9 +218,11 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
                           SizedBox(height: 15),
                           activity,
                           SizedBox(height: 15),
+                          goal,
+                          SizedBox(height: 15),
                           calculateButton,
                           SizedBox(height: 15),
-                          resultSection,
+                          backButton,
                         ])),
                   ))),
         ));
