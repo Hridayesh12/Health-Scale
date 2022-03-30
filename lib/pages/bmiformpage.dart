@@ -157,7 +157,7 @@ class _BmiFormPageState extends State<BmiFormPage> {
         borderRadius: BorderRadius.circular(30),
         color: Colors.redAccent,
         child: Text(
-          _result == 0.0
+          _result == null
               ? "Enter Value"
               : "BMI : ${_result.toStringAsFixed(4)}",
           style: TextStyle(
@@ -212,7 +212,6 @@ class _BmiFormPageState extends State<BmiFormPage> {
                               // diagnose,
                             ])),
                   ))),
-            
         ));
   }
 
