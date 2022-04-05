@@ -34,6 +34,14 @@ class _MacroFormPageState extends State<MacroFormPage> {
   String valueForGoal = "Maintain Weight";
   int gender = 1;
   DateTime date = DateTime(1900);
+  double _finalCalorie = 0;
+  double protienLowerLimit = 0;
+  double protienUpperLimit = 0;
+  double fatsLowerLimit = 0;
+  double fatsUpperLimit = 0;
+  double carbsLowerLimit = 0;
+  double carbsUpperLimit = 0;
+
   @override
   Widget build(BuildContext context) {
     final genderField = Column(
@@ -71,7 +79,7 @@ class _MacroFormPageState extends State<MacroFormPage> {
     );
     final dobField = TextFormField(
       autofocus: false,
-      controller: heightController,
+      controller: ageController,
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -180,8 +188,13 @@ class _MacroFormPageState extends State<MacroFormPage> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {},
-        child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        onPressed: calculateCalorie,
+        child: Text("Calculate",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
     final backButton = Material(
@@ -192,11 +205,46 @@ class _MacroFormPageState extends State<MacroFormPage> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Dashboard()));
         },
-        child: Text("Back", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("Back",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
+
+    final Finalresult = Material(
+        elevation: 5,
+        borderRadius: BorderRadius.circular(30),
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Text(
+            "Protein :" +
+                (protienLowerLimit).toStringAsFixed(4) +
+                " to " +
+                (protienUpperLimit).toStringAsFixed(4) +
+                " grams\n\nCarbs :" +
+                (carbsLowerLimit).toStringAsFixed(4) +
+                " to " +
+                (carbsUpperLimit).toStringAsFixed(4) +
+                " grams\n\nFats :" +
+                (fatsLowerLimit).toStringAsFixed(4) +
+                " to " +
+                (fatsUpperLimit).toStringAsFixed(4) +
+                " grams",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ));
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
@@ -207,24 +255,135 @@ class _MacroFormPageState extends State<MacroFormPage> {
                     padding: const EdgeInsets.all(30.0),
                     child: Form(
                         key: _formKey,
-                        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-                          genderField,
-                          SizedBox(height: 10),
-                          dobField,
-                          SizedBox(height: 10),
-                          height,
-                          SizedBox(height: 15),
-                          weight,
-                          SizedBox(height: 15),
-                          activity,
-                          SizedBox(height: 15),
-                          goal,
-                          SizedBox(height: 15),
-                          calculateButton,
-                          SizedBox(height: 15),
-                          backButton,
-                        ])),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              genderField,
+                              SizedBox(height: 10),
+                              dobField,
+                              SizedBox(height: 10),
+                              height,
+                              SizedBox(height: 15),
+                              weight,
+                              SizedBox(height: 15),
+                              activity,
+                              SizedBox(height: 15),
+                              goal,
+                              SizedBox(height: 15),
+                              calculateButton,
+                              SizedBox(height: 15),
+                              backButton,
+                              SizedBox(height: 15),
+                              Finalresult
+                            ])),
                   ))),
         ));
+  }
+
+  double protienCalc(double calorie_factor, double percent_factor) {
+    return ((_finalCalorie - calorie_factor) * percent_factor * 0.25);
+  }
+
+  double carbsCalc(double calorie_factor, double percent_factor) {
+    return ((_finalCalorie - calorie_factor) * percent_factor * 0.25);
+  }
+
+  double fatsCalc(double calorie_factor, double percent_factor) {
+    return ((_finalCalorie - calorie_factor) * percent_factor * 0.1111);
+  }
+
+  void calculateCalorie() {
+    double _height = double.parse(heightController.text);
+    double _weight = double.parse(weightController.text);
+    double _age = double.parse(ageController.text);
+    double _BMR, _maintainence;
+    _BMR = _maintainence = 0;
+    if (gender == 1) {
+      _BMR = 10 * _weight + 6.25 * _height - 5 * _age + 5;
+    } else if (gender == 2) {
+      _BMR = 10 * _weight + 6.25 * _height - 5 * _age - 161;
+    }
+    switch (valueForActivity) {
+      case "Basal Metabollic Rate":
+        {
+          _maintainence = _BMR;
+        }
+        break;
+      case "Sedentary: Little Or No Exercise":
+        {
+          _maintainence = _BMR * 1.22;
+        }
+        break;
+      case "Light:Exercise 1-3times/week":
+        {
+          _maintainence = _BMR * 1.375;
+        }
+        break;
+      case "Moderate:Exercise 4-5times/week":
+        {
+          _maintainence = _BMR * 1.465;
+        }
+        break;
+      case "Active:Exercise 3-4times/week":
+        {
+          _maintainence = _BMR * 1.549;
+        }
+        break;
+      case "Very Active:Exercise 6-7times/week":
+        {
+          _maintainence = _BMR * 1.725;
+        }
+        break;
+      case "Extra Active:Very Intense Exercise Daily":
+        {
+          _maintainence = _BMR * 1.9;
+        }
+        break;
+    }
+    _finalCalorie = _maintainence;
+    switch (valueForGoal) {
+      case "Maintain Weight":
+        {
+          protienLowerLimit = protienCalc(0, 0.10);
+          protienUpperLimit = protienCalc(0, 0.35);
+          fatsLowerLimit = fatsCalc(0, 0.20);
+          fatsUpperLimit = fatsCalc(0, 0.35);
+          carbsLowerLimit = carbsCalc(0, 0.40);
+          carbsUpperLimit = carbsCalc(0, 0.70);
+        }
+        break;
+      case "Mild Weight Loss 0.5lb/week":
+        {
+          protienLowerLimit = protienCalc(0, 0.10);
+          protienUpperLimit = protienCalc(0, 0.35);
+          fatsLowerLimit = fatsCalc(250, 0.20);
+          fatsUpperLimit = fatsCalc(250, 0.35);
+          carbsLowerLimit = carbsCalc(250, 0.40);
+          carbsUpperLimit = carbsCalc(250, 0.70);
+        }
+        break;
+      case "Weight Loss 1lb/week":
+        {
+          protienLowerLimit = protienCalc(0, 0.10);
+          protienUpperLimit = protienCalc(0, 0.35);
+          fatsLowerLimit = fatsCalc(500, 0.20);
+          fatsUpperLimit = fatsCalc(500, 0.35);
+          carbsLowerLimit = carbsCalc(500, 0.40);
+          carbsUpperLimit = carbsCalc(500, 0.70);
+        }
+        break;
+      case "Extreme Weight Loss 2lb/week":
+        {
+          protienLowerLimit = protienCalc(0, 0.10);
+          protienUpperLimit = protienCalc(0, 0.35);
+          fatsLowerLimit = fatsCalc(1000, 0.20);
+          fatsUpperLimit = fatsCalc(1000, 0.35);
+          carbsLowerLimit = carbsCalc(1000, 0.40);
+          carbsUpperLimit = carbsCalc(1000, 0.70);
+        }
+        break;
+    }
+    setState(() {});
   }
 }

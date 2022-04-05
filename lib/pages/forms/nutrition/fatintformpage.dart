@@ -24,6 +24,8 @@ class _FatIntFormPageState extends State<FatIntFormPage> {
   String valueForActivity = "Basal Metabollic Rate";
   int gender = 1;
   DateTime date = DateTime(1900);
+  double _finalCalorie = 0;
+
   @override
   Widget build(BuildContext context) {
     final genderField = Column(
@@ -61,7 +63,7 @@ class _FatIntFormPageState extends State<FatIntFormPage> {
     );
     final dobField = TextFormField(
       autofocus: false,
-      controller: heightController,
+      controller: ageController,
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -145,8 +147,13 @@ class _FatIntFormPageState extends State<FatIntFormPage> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {},
-        child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        onPressed: calculateCalorie,
+        child: Text("Calculate",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
     final backButton = Material(
@@ -157,37 +164,200 @@ class _FatIntFormPageState extends State<FatIntFormPage> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Dashboard()));
         },
-        child: Text("Back", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("Back",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
+
+    final Finalresult = Material(
+        elevation: 5,
+        borderRadius: BorderRadius.circular(30),
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Table(
+            // defaultColumnWidth: FixedColumnWidth(120.0),
+            border: TableBorder.all(
+                color: Colors.black, style: BorderStyle.solid, width: 2),
+            children: [
+              TableRow(children: [
+                Column(children: [
+                  Text('Parameter', style: TextStyle(fontWeight: FontWeight.bold))
+                ]),
+                Column(children: [
+                  Text('Fat Allowance', style: TextStyle(fontWeight: FontWeight.bold))
+                ]),
+                Column(children: [
+                  Text('Saturated Fat', style: TextStyle(fontWeight: FontWeight.bold))
+                ]),
+                Column(children: [
+                  Text('Saturated Fat allowance to reduce Heart Disease',
+                      style: TextStyle(fontWeight: FontWeight.bold)
+                  )
+                ]),
+              ]),
+              TableRow(children: [
+                Column(children: [Text('For Maintaining Weight :')]),
+                Column(children: [
+                  Text((calorieResult(0, 0.20)).toStringAsFixed(4) +
+                      " to " +
+                      (calorieResult(0, 0.35)).toStringAsFixed(4) +
+                      " grams")
+                ]),
+                Column(children: [
+                  Text((calorieResult(0, 0.10)).toStringAsFixed(4) + " grams")
+                ]),
+                Column(children: [
+                  Text((calorieResult(0, 0.07)).toStringAsFixed(4) + " grams")
+                ]),
+              ]),
+              TableRow(children: [
+                Column(children: [Text('For mild weight loss(0.5 lb/week) :')]),
+                Column(children: [
+                  Text((calorieResult(250, 0.20)).toStringAsFixed(4) +
+                      " to " +
+                      (calorieResult(250, 0.35)).toStringAsFixed(4) +
+                      " grams")
+                ]),
+                Column(children: [
+                  Text((calorieResult(250, 0.10)).toStringAsFixed(4) + " grams")
+                ]),
+                Column(children: [
+                  Text((calorieResult(250, 0.07)).toStringAsFixed(4) + " grams")
+                ]),
+              ]),
+              TableRow(children: [
+                Column(children: [Text('For weight loss(1lb/week) :')]),
+                Column(children: [
+                  Text((calorieResult(500, 0.20)).toStringAsFixed(4) +
+                      " to " +
+                      (calorieResult(500, 0.35)).toStringAsFixed(4) +
+                      " grams")
+                ]),
+                Column(children: [
+                  Text((calorieResult(500, 0.10)).toStringAsFixed(4) + " grams")
+                ]),
+                Column(children: [
+                  Text((calorieResult(500, 0.07)).toStringAsFixed(4) + " grams")
+                ]),
+              ]),
+              TableRow(children: [
+                Column(children: [Text('For extreme weight loss(2lb/week) :')]),
+                Column(children: [
+                  Text((calorieResult(1000, 0.20)).toStringAsFixed(4) +
+                      " to " +
+                      (calorieResult(1000, 0.35)).toStringAsFixed(4) +
+                      " grams")
+                ]),
+                Column(children: [
+                  Text(
+                      (calorieResult(1000, 0.10)).toStringAsFixed(4) + " grams")
+                ]),
+                Column(children: [
+                  Text(
+                      (calorieResult(1000, 0.07)).toStringAsFixed(4) + " grams")
+                ]),
+              ]),
+            ],
+          ),
+        ));
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
           child: SingleChildScrollView(
               child: Container(
                   color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: Form(
-                        key: _formKey,
-                        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-                          genderField,
-                          SizedBox(height: 10),
-                          dobField,
-                          SizedBox(height: 10),
-                          height,
-                          SizedBox(height: 15),
-                          weight,
-                          SizedBox(height: 15),
-                          activity,
-                          SizedBox(height: 15),
-                          calculateButton,
-                          SizedBox(height: 15),
-                          backButton,
-                        ])),
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Form(
+                          key: _formKey,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                genderField,
+                                SizedBox(height: 10),
+                                dobField,
+                                SizedBox(height: 10),
+                                height,
+                                SizedBox(height: 15),
+                                weight,
+                                SizedBox(height: 15),
+                                activity,
+                                SizedBox(height: 15),
+                                calculateButton,
+                                SizedBox(height: 15),
+                                backButton,
+                                SizedBox(height: 15),
+                                Finalresult
+                              ])),
+                    ),
                   ))),
         ));
+  }
+
+  double calorieResult(double calorie_factor, double percent_factor) {
+    return ((_finalCalorie - calorie_factor) * percent_factor * 0.1111);
+  }
+
+  void calculateCalorie() {
+    double _height = double.parse(heightController.text);
+    double _weight = double.parse(weightController.text);
+    double _age = double.parse(ageController.text);
+    double _BMR, _maintainence;
+    _BMR = _maintainence = 0;
+    if (gender == 1) {
+      _BMR = 10 * _weight + 6.25 * _height - 5 * _age + 5;
+    } else if (gender == 2) {
+      _BMR = 10 * _weight + 6.25 * _height - 5 * _age - 161;
+    }
+    switch (valueForActivity) {
+      case "Basal Metabollic Rate":
+        {
+          _maintainence = _BMR;
+        }
+        break;
+      case "Sedentary: Little Or No Exercise":
+        {
+          _maintainence = _BMR * 1.22;
+        }
+        break;
+      case "Light:Exercise 1-3times/week":
+        {
+          _maintainence = _BMR * 1.375;
+        }
+        break;
+      case "Moderate:Exercise 4-5times/week":
+        {
+          _maintainence = _BMR * 1.465;
+        }
+        break;
+      case "Active:Exercise 3-4times/week":
+        {
+          _maintainence = _BMR * 1.549;
+        }
+        break;
+      case "Very Active:Exercise 6-7times/week":
+        {
+          _maintainence = _BMR * 1.725;
+        }
+        break;
+      case "Extra Active:Very Intense Exercise Daily":
+        {
+          _maintainence = _BMR * 1.9;
+        }
+        break;
+    }
+    _finalCalorie = _maintainence;
+    setState(() {});
   }
 }
