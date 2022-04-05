@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'homepage.dart';
+import '../../dashboard.dart';
 
 class TdeeFormPage extends StatefulWidget {
   @override
@@ -174,12 +174,10 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
             } else if (valueForActivity == "Light:Exercise 1-3times/week") {
               _tdee = bmr * 1.375;
               print(_tdee);
-            } else if (valueForActivity ==
-                "Moderately Active:Exercise 4-5times/week") {
+            } else if (valueForActivity == "Moderately Active:Exercise 4-5times/week") {
               _tdee = bmr * 1.55;
               print(_tdee);
-            } else if (valueForActivity ==
-                "Very Active:Exercise 6-7times/week") {
+            } else if (valueForActivity == "Very Active:Exercise 6-7times/week") {
               _tdee = bmr * 1.725;
               print(_tdee);
             } else {
@@ -206,12 +204,10 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
             } else if (valueForActivity == "Light:Exercise 1-3times/week") {
               _tdee = bmr * 1.375;
               print(_tdee);
-            } else if (valueForActivity ==
-                "Moderately Active:Exercise 4-5times/week") {
+            } else if (valueForActivity == "Moderately Active:Exercise 4-5times/week") {
               _tdee = bmr * 1.55;
               print(_tdee);
-            } else if (valueForActivity ==
-                "Very Active:Exercise 6-7times/week") {
+            } else if (valueForActivity == "Very Active:Exercise 6-7times/week") {
               _tdee = bmr * 1.725;
               print(_tdee);
             } else {
@@ -222,31 +218,7 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
           }
           print(gender);
         },
-        child: Text("Calculate",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                fontWeight: FontWeight.bold)),
-      ),
-    );
-    final backButton = Material(
-      elevation: 5,
-      borderRadius: BorderRadius.circular(30),
-      color: Colors.redAccent,
-      child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-        minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => WelcomePage()));
-        },
-        child: Text("Back",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                fontWeight: FontWeight.bold)),
+        child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
     final resultSection = Material(
@@ -254,15 +226,35 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
         borderRadius: BorderRadius.circular(30),
         color: Colors.redAccent,
         child: Text(
-          _tdee == 0.0 ? "Enter Value" : "TDEE : ${_tdee.toStringAsFixed(4)}",
+          _tdee == 0.0 ? "Enter Value" : "The estimated TDEE or body weight maintenance energy requirement is ${_tdee.toStringAsFixed(4)} Calories per day.",
           style: TextStyle(
             color: Colors.white,
             fontSize: 19.4,
             fontWeight: FontWeight.w500,
           ),
         ));
+    final navbar = AppBar(
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        tooltip: 'Menu Icon',
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+        },
+      ),
+      title: Text(
+        "Health Scale",
+        style: TextStyle(
+          fontSize: 23,
+          color: Colors.white,
+          fontFamily: 'Inter',
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: Color.fromRGBO(61, 96, 152, 1),
+    );
     return Scaffold(
         backgroundColor: Colors.white,
+        appBar: navbar,
         body: Center(
           child: SingleChildScrollView(
               child: Container(
@@ -271,26 +263,21 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
                     padding: const EdgeInsets.all(30.0),
                     child: Form(
                         key: _formKey,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              genderField,
-                              SizedBox(height: 10),
-                              dobField,
-                              SizedBox(height: 10),
-                              height,
-                              SizedBox(height: 15),
-                              weight,
-                              SizedBox(height: 15),
-                              activity,
-                              SizedBox(height: 15),
-                              calculateButton,
-                              SizedBox(height: 15),
-                              backButton,
-                              SizedBox(height: 15),
-                              resultSection,
-                            ])),
+                        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+                          genderField,
+                          SizedBox(height: 10),
+                          dobField,
+                          SizedBox(height: 10),
+                          height,
+                          SizedBox(height: 15),
+                          weight,
+                          SizedBox(height: 15),
+                          activity,
+                          SizedBox(height: 15),
+                          calculateButton,
+                          SizedBox(height: 15),
+                          resultSection,
+                        ])),
                   ))),
         ));
   }

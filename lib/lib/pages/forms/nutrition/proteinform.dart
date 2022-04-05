@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'homepage.dart';
+import '../../dashboard.dart';
 
-class MacroFormPage extends StatefulWidget {
+class ProteinFormPage extends StatefulWidget {
   @override
-  _MacroFormPageState createState() => _MacroFormPageState();
+  _ProteinFormPageState createState() => _ProteinFormPageState();
 }
 
-class _MacroFormPageState extends State<MacroFormPage> {
+class _ProteinFormPageState extends State<ProteinFormPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController ageController = new TextEditingController();
   final TextEditingController heightController = new TextEditingController();
@@ -22,16 +22,6 @@ class _MacroFormPageState extends State<MacroFormPage> {
     "Extra Active:Very Intense Exercise Daily"
   ];
   String valueForActivity = "Basal Metabollic Rate";
-  List goalList = [
-    "Maintain Weight",
-    "Mild Weight Loss 0.5lb/week",
-    "Weight Loss 1lb/week",
-    "Extreme Weight Loss 2lb/week",
-    "Mild Weight Gain 0.5lb/week",
-    "Weight Gain 1lb/week",
-    "Extreme Weight Gain 2lb/week"
-  ];
-  String valueForGoal = "Maintain Weight";
   int gender = 1;
   DateTime date = DateTime(1900);
   @override
@@ -148,31 +138,6 @@ class _MacroFormPageState extends State<MacroFormPage> {
         }).toList(),
       ),
     );
-    final goal = Container(
-      child: DropdownButton(
-        value: valueForGoal.isNotEmpty ? valueForGoal : null,
-        hint: Text("Choose One Activity"),
-        dropdownColor: Colors.lightBlue.shade200,
-        icon: Icon(Icons.arrow_drop_down),
-        iconSize: 17,
-        isExpanded: true,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 12,
-        ),
-        onChanged: (newValue) {
-          setState(() {
-            valueForGoal = newValue as String;
-          });
-        },
-        items: goalList.map((valueItem) {
-          return DropdownMenuItem(
-            value: valueItem,
-            child: Text(valueItem),
-          );
-        }).toList(),
-      ),
-    );
     final calculateButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
@@ -192,7 +157,7 @@ class _MacroFormPageState extends State<MacroFormPage> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
         },
         child: Text("Back", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
       ),
@@ -217,8 +182,6 @@ class _MacroFormPageState extends State<MacroFormPage> {
                           weight,
                           SizedBox(height: 15),
                           activity,
-                          SizedBox(height: 15),
-                          goal,
                           SizedBox(height: 15),
                           calculateButton,
                           SizedBox(height: 15),

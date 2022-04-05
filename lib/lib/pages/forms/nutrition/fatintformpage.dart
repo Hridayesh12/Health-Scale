@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'homepage.dart';
+import '../../dashboard.dart';
 
-class ProteinFormPage extends StatefulWidget {
+class FatIntFormPage extends StatefulWidget {
   @override
-  _ProteinFormPageState createState() => _ProteinFormPageState();
+  _FatIntFormPageState createState() => _FatIntFormPageState();
 }
 
-class _ProteinFormPageState extends State<ProteinFormPage> {
+class _FatIntFormPageState extends State<FatIntFormPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController ageController = new TextEditingController();
   final TextEditingController heightController = new TextEditingController();
@@ -157,7 +157,7 @@ class _ProteinFormPageState extends State<ProteinFormPage> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
         },
         child: Text("Back", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
       ),

@@ -10,6 +10,7 @@ class BodyFatFormPage extends StatefulWidget {
 
 class _BodyFatFormPageState extends State<BodyFatFormPage> {
   final _formKey = GlobalKey<FormState>();
+  String res = "Result";
   final TextEditingController ageController = new TextEditingController();
   final TextEditingController heightController = new TextEditingController();
   final TextEditingController weightController = new TextEditingController();
@@ -186,6 +187,30 @@ class _BodyFatFormPageState extends State<BodyFatFormPage> {
             //double bf = (495 / (1.0324 - 0.19077 * log(waist - neck) +  0.15456 * log(height))) - 450;
             bfp = bf;
             print(bfp);
+            if (bfp < 2.0) {
+              res = "Very Less Fat";
+            }
+            ;
+            if (bfp > 2.0 && bfp < 6.0) {
+              res = "Essential";
+            }
+            ;
+            if (bfp > 6.0 && bfp < 14.0) {
+              res = "Athletes";
+            }
+            ;
+            if (bfp > 14.0 && bfp < 18.0) {
+              res = "Fitness";
+            }
+            ;
+            if (bfp > 18.0 && bfp < 25.0) {
+              res = "Average";
+            }
+            ;
+            if (bfp > 25.0) {
+              res = "Obese";
+            }
+            ;
             setState(() {});
           }
         },
@@ -195,33 +220,53 @@ class _BodyFatFormPageState extends State<BodyFatFormPage> {
     final resultSection = Material(
         elevation: 5,
         borderRadius: BorderRadius.circular(30),
-        color: Colors.redAccent,
-        child: Text(
-          bfp == null ? "Enter Value" : "BFP : $bfp",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 19.4,
-            fontWeight: FontWeight.w500,
+        color: Colors.white,
+        child: MaterialButton(
+            onPressed: () {},
+            minWidth: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+            child: Text(
+              bfp == null ? "Enter Value" : "BFP : $bfp",
+              style: TextStyle(
+                color: Color.fromRGBO(61, 96, 152, 1),
+                fontSize: 19.4,
+                fontWeight: FontWeight.w500,
+              ),
+            )));
+    final resul = Material(
+        elevation: 5,
+        child: MaterialButton(
+          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          onPressed: () {},
+          minWidth: MediaQuery.of(context).size.width,
+          child: Text(
+            bfp == null ? "Enter Value" : "${res}",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 19.4,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ));
     final navbar = AppBar(
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
+        color: Color.fromRGBO(61, 96, 152, 1),
         tooltip: 'Menu Icon',
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+          Navigator.pop(context);
         },
       ),
       title: Text(
-        "Health Scale",
+        "BodyFat Calculator",
         style: TextStyle(
           fontSize: 23,
-          color: Colors.white,
+          color: Color.fromRGBO(61, 96, 152, 1),
           fontFamily: 'Inter',
           fontWeight: FontWeight.bold,
         ),
       ),
-      backgroundColor: Color.fromRGBO(61, 96, 152, 1),
+      backgroundColor: Colors.white,
     );
     return Scaffold(
         backgroundColor: Colors.white,
@@ -250,6 +295,8 @@ class _BodyFatFormPageState extends State<BodyFatFormPage> {
                           calculateButton,
                           SizedBox(height: 15),
                           resultSection,
+                          SizedBox(height: 15),
+                          // resul,
                         ])),
                   ))),
         ));

@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'homepage.dart';
+import '../../dashboard.dart';
 
-class IdlWtFormPage extends StatefulWidget {
+class CarbFormPage extends StatefulWidget {
   @override
-  _IdlWtFormPageState createState() => _IdlWtFormPageState();
+  _CarbFormPageState createState() => _CarbFormPageState();
 }
 
-class _IdlWtFormPageState extends State<IdlWtFormPage> {
+class _CarbFormPageState extends State<CarbFormPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController ageController = new TextEditingController();
   final TextEditingController heightController = new TextEditingController();
+  final TextEditingController weightController = new TextEditingController();
+  List activityList = [
+    "Basal Metabollic Rate",
+    "Sedentary: Little Or No Exercise",
+    "Light:Exercise 1-3times/week",
+    "Moderate:Exercise 4-5times/week",
+    "Active:Exercise 3-4times/week",
+    "Very Active:Exercise 6-7times/week",
+    "Extra Active:Very Intense Exercise Daily"
+  ];
+  String valueForActivity = "Basal Metabollic Rate";
   int gender = 1;
-  double _ideal = 0.0;
   DateTime date = DateTime(1900);
   @override
   Widget build(BuildContext context) {
@@ -51,7 +61,7 @@ class _IdlWtFormPageState extends State<IdlWtFormPage> {
     );
     final dobField = TextFormField(
       autofocus: false,
-      controller: ageController,
+      controller: heightController,
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -85,6 +95,49 @@ class _IdlWtFormPageState extends State<IdlWtFormPage> {
             borderRadius: BorderRadius.circular(10),
           )),
     );
+    final weight = TextFormField(
+      autofocus: false,
+      controller: weightController,
+      keyboardType: TextInputType.number,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        }
+        return null;
+      },
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          labelText: 'Weight in kg',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          )),
+    );
+    final activity = Container(
+      child: DropdownButton(
+        value: valueForActivity.isNotEmpty ? valueForActivity : null,
+        hint: Text("Choose One Activity"),
+        dropdownColor: Colors.lightBlue.shade200,
+        icon: Icon(Icons.arrow_drop_down),
+        iconSize: 17,
+        isExpanded: true,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 12,
+        ),
+        onChanged: (newValue) {
+          setState(() {
+            valueForActivity = newValue as String;
+          });
+        },
+        items: activityList.map((valueItem) {
+          return DropdownMenuItem(
+            value: valueItem,
+            child: Text(valueItem),
+          );
+        }).toList(),
+      ),
+    );
     final calculateButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
@@ -92,50 +145,10 @@ class _IdlWtFormPageState extends State<IdlWtFormPage> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {
-          if (gender == 1) {
-            double height = double.parse(heightController.text) * 0.03937;
-            print(height);
-            double age = double.parse(ageController.text);
-            if (height > 5) {
-              _ideal = 50 + 2.3 * (height - 5);
-            } else {
-              _ideal = 50.0;
-            }
-            //double bf = (495 / (1.0324 - 0.19077 * log(waist - neck) +  0.15456 * log(height))) - 450;
-            setState(() {});
-          } else {
-            double height = double.parse(heightController.text) * 0.03937;
-            double age = double.parse(ageController.text);
-            if (height > 5) {
-              _ideal = 45.5 + 2.3 * (height - 5);
-            } else {
-              _ideal = 45.5;
-            }
-            //double bf = (495 / (1.0324 - 0.19077 * log(waist - neck) +  0.15456 * log(height))) - 450;
-            setState(() {});
-          }
-        },
-        child: Text("Calculate",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                fontWeight: FontWeight.bold)),
+        onPressed: () {},
+        child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
-    final resultSection = Material(
-        elevation: 5,
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.redAccent,
-        child: Text(
-          _ideal == 0.0 ? "Enter Value" : "Ideal weight : ${_ideal.toStringAsFixed(4)}",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 19.4,
-            fontWeight: FontWeight.w500,
-          ),
-        ));
     final backButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
@@ -144,15 +157,9 @@ class _IdlWtFormPageState extends State<IdlWtFormPage> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => WelcomePage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
         },
-        child: Text("Back",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                fontWeight: FontWeight.bold)),
+        child: Text("Back", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
     return Scaffold(
@@ -165,22 +172,21 @@ class _IdlWtFormPageState extends State<IdlWtFormPage> {
                     padding: const EdgeInsets.all(30.0),
                     child: Form(
                         key: _formKey,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              genderField,
-                              SizedBox(height: 10),
-                              dobField,
-                              SizedBox(height: 10),
-                              height,
-                              SizedBox(height: 15),
-                              calculateButton,
-                              SizedBox(height: 15),
-                              backButton,
-                              SizedBox(height: 15),
-                              resultSection,
-                            ])),
+                        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+                          genderField,
+                          SizedBox(height: 10),
+                          dobField,
+                          SizedBox(height: 10),
+                          height,
+                          SizedBox(height: 15),
+                          weight,
+                          SizedBox(height: 15),
+                          activity,
+                          SizedBox(height: 15),
+                          calculateButton,
+                          SizedBox(height: 15),
+                          backButton,
+                        ])),
                   ))),
         ));
   }

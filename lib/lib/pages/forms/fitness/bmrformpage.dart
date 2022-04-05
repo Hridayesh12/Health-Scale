@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'homepage.dart';
+import '../../dashboard.dart';
 
 class BmrFormPage extends StatefulWidget {
   @override
@@ -138,47 +138,100 @@ class _BmrFormPageState extends State<BmrFormPage> {
           }
           print(gender);
         },
-        child: Text("Calculate",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                fontWeight: FontWeight.bold)),
+        child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
-    final backButton = Material(
-      elevation: 5,
-      borderRadius: BorderRadius.circular(30),
-      color: Colors.redAccent,
-      child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-        minWidth: MediaQuery.of(context).size.width,
+    final navbar = AppBar(
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        color: Color.fromRGBO(61, 96, 152, 1),
+        tooltip: 'Menu Icon',
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => WelcomePage()));
+          Navigator.pop(context);
         },
-        child: Text("Back",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                fontWeight: FontWeight.bold)),
       ),
+      title: Text(
+        "BMR Calculator",
+        style: TextStyle(
+          fontSize: 23,
+          color: Color.fromRGBO(61, 96, 152, 1),
+          fontFamily: 'Inter',
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: Colors.white,
     );
     final resultSection = Material(
         elevation: 5,
         borderRadius: BorderRadius.circular(30),
-        color: Colors.redAccent,
-        child: Text(
-          _bmr == null ? "Enter Value" : "BMR : $_bmr",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 19.4,
-            fontWeight: FontWeight.w500,
+        color: Colors.white,
+        child: MaterialButton(
+          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          onPressed: () {},
+          minWidth: MediaQuery.of(context).size.width,
+          child: Text(
+            _bmr == null ? "Enter Value" : "BMR : $_bmr",
+            style: TextStyle(
+              color: Color.fromRGBO(61, 96, 152, 1),
+              fontSize: 19.4,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ));
+    final tab = Column(children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Text(
+          "Expected BMR on basis of activity",
+          textScaleFactor: 2,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Table(
+          // textDirection: TextDirection.rtl,
+          // defaultVerticalAlignment: TableCellVerticalAlignment.bottom,
+          // border:TableBorder.all(width: 2.0,color: Colors.red),
+          children: [
+            TableRow(children: [
+              Text(
+                "Activity Level",
+                textScaleFactor: 1.5,
+              ),
+              Text("Calories", textScaleFactor: 1.5),
+            ]),
+            TableRow(children: [
+              Text("Sedentary: little or no exercise", textScaleFactor: 1.0),
+              Text("1,926", textScaleFactor: 1.0),
+            ]),
+            TableRow(children: [
+              Text("Exercise 1-3 times/week", textScaleFactor: 1.0),
+              Text("2,207", textScaleFactor: 1.0),
+            ]),
+            TableRow(children: [
+              Text("Exercise 4-5 times/week", textScaleFactor: 1.0),
+              Text("2,351", textScaleFactor: 1.0),
+            ]),
+            TableRow(children: [
+              Text("Daily exercise or intense exercise 3-4 times/week	", textScaleFactor: 1.0),
+              Text("2,488", textScaleFactor: 1.0),
+            ]),
+            TableRow(children: [
+              Text("Intense exercise 6-7 times/week", textScaleFactor: 1.0),
+              Text("2,769", textScaleFactor: 1.0),
+            ]),
+            TableRow(children: [
+              Text("Very intense exercise daily, or physical job", textScaleFactor: 1.0),
+              Text("3,050", textScaleFactor: 1.0),
+            ]),
+          ],
+        ),
+      ),
+    ]);
     return Scaffold(
         backgroundColor: Colors.white,
+        appBar: navbar,
         body: Center(
           child: SingleChildScrollView(
               child: Container(
@@ -187,24 +240,21 @@ class _BmrFormPageState extends State<BmrFormPage> {
                     padding: const EdgeInsets.all(30.0),
                     child: Form(
                         key: _formKey,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              genderField,
-                              SizedBox(height: 10),
-                              dobField,
-                              SizedBox(height: 10),
-                              height,
-                              SizedBox(height: 15),
-                              weight,
-                              SizedBox(height: 15),
-                              calculateButton,
-                              SizedBox(height: 15),
-                              backButton,
-                              SizedBox(height: 15),
-                              resultSection,
-                            ])),
+                        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+                          genderField,
+                          SizedBox(height: 10),
+                          dobField,
+                          SizedBox(height: 10),
+                          height,
+                          SizedBox(height: 15),
+                          weight,
+                          SizedBox(height: 15),
+                          calculateButton,
+                          SizedBox(height: 15),
+                          resultSection,
+                          SizedBox(height: 15),
+                          tab
+                        ])),
                   ))),
         ));
   }

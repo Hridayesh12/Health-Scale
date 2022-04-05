@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'homepage.dart';
+import '../../dashboard.dart';
 
 class BmiFormPage extends StatefulWidget {
   @override
@@ -16,6 +16,7 @@ class _BmiFormPageState extends State<BmiFormPage> {
   double _result = 0.00;
   double _bmi = 0.0;
   DateTime date = DateTime(1900);
+  String res = "Unders";
   @override
   Widget build(BuildContext context) {
     final genderField = Column(
@@ -122,48 +123,78 @@ class _BmiFormPageState extends State<BmiFormPage> {
           double heightSquare = height * height;
           double result = weight / heightSquare;
           _result = result;
-          print(_result);
+
+          if (_result < 18.5) {
+            res = "Under Weight";
+          }
+          ;
+          if (_result >= 18.5 && _result <= 24.9) {
+            res = "Normal Weight";
+          }
+          ;
+          if (_result >= 25.0 && _result <= 29.9) {
+            res = "Over Weight";
+          }
+          ;
+          if (_result > 29.9) {
+            res = "Obese";
+          }
+          ;
           setState(() {});
         },
-        child: Text("Calculate",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                fontWeight: FontWeight.bold)),
+        child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
-    final backButton = Material(
-      elevation: 5,
-      borderRadius: BorderRadius.circular(30),
-      color: Colors.redAccent,
-      child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-        minWidth: MediaQuery.of(context).size.width,
+    final navbar = AppBar(
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        color: Color.fromRGBO(61, 96, 152, 1),
+        tooltip: 'Menu Icon',
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => WelcomePage()));
+          Navigator.pop(context);
         },
-        child: Text("Back",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                fontWeight: FontWeight.bold)),
       ),
+      title: Text(
+        "BMI Calculator",
+        style: TextStyle(
+          fontSize: 23,
+          color: Color.fromRGBO(61, 96, 152, 1),
+          fontFamily: 'Inter',
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: Colors.white,
     );
+
     final resultSection = Material(
         elevation: 5,
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.redAccent,
-        child: Text(
-          _result == null
-              ? "Enter Value"
-              : "BMI : ${_result.toStringAsFixed(4)}",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 19.4,
-            fontWeight: FontWeight.w500,
+        child: MaterialButton(
+          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          onPressed: () {},
+          minWidth: MediaQuery.of(context).size.width,
+          child: Text(
+            _result == null ? "Enter Value" : "BMI : ${_result.toStringAsFixed(4)}",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 19.4,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ));
+    final resul = Material(
+        elevation: 5,
+        color: Colors.white,
+        child: MaterialButton(
+          onPressed: () {},
+          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          minWidth: MediaQuery.of(context).size.width,
+          child: Text(
+            res == "Unders" ? "Result" : "${res}",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 19.4,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ));
     // final diagnose = Material(
@@ -171,9 +202,7 @@ class _BmiFormPageState extends State<BmiFormPage> {
     //     borderRadius: BorderRadius.circular(30),
     //     color: Colors.redAccent,
     //     child: Text(
-    //       _bmi == 0
-    //           ? "Enter values for BMI Calc"
-    //           : "BMI : ${_result.toStringAsFixed(4)}",
+    //       _bmi == 0 ? "Enter values for BMI Calc" : "BMI : ${_result.toStringAsFixed(4)}",
     //       style: TextStyle(
     //         color: Colors.white,
     //         fontSize: 19.4,
@@ -183,6 +212,7 @@ class _BmiFormPageState extends State<BmiFormPage> {
 
     return Scaffold(
         backgroundColor: Colors.white,
+        appBar: navbar,
         body: Center(
           child: SingleChildScrollView(
               child: Container(
@@ -191,26 +221,22 @@ class _BmiFormPageState extends State<BmiFormPage> {
                     padding: const EdgeInsets.all(30.0),
                     child: Form(
                         key: _formKey,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              genderField,
-                              SizedBox(height: 10),
-                              //dobField,
-                              SizedBox(height: 10),
-                              height,
-                              SizedBox(height: 15),
-                              weight,
-                              SizedBox(height: 15),
-                              calculateButton,
-                              SizedBox(height: 15),
-                              backButton,
-                              SizedBox(height: 15),
-                              resultSection,
-                              // SizedBox(height: 15),
-                              // diagnose,
-                            ])),
+                        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+                          genderField,
+                          SizedBox(height: 10),
+                          //dobField,
+                          SizedBox(height: 10),
+                          height,
+                          SizedBox(height: 15),
+                          weight,
+                          SizedBox(height: 15),
+                          calculateButton,
+                          SizedBox(height: 15),
+                          resultSection,
+                          SizedBox(height: 15),
+                          resul
+                          //diagnose,
+                        ])),
                   ))),
         ));
   }

@@ -2,38 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../dashboard.dart';
 
-class TdeeFormPage extends StatefulWidget {
+class IdlWtFormPage extends StatefulWidget {
   @override
-  _TdeeFormPageState createState() => _TdeeFormPageState();
+  _IdlWtFormPageState createState() => _IdlWtFormPageState();
 }
 
-class _TdeeFormPageState extends State<TdeeFormPage> {
+class _IdlWtFormPageState extends State<IdlWtFormPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController ageController = new TextEditingController();
   final TextEditingController heightController = new TextEditingController();
-  final TextEditingController weightController = new TextEditingController();
-  List activityList = [
-    "Basal Metabollic Rate",
-    "Sedentary: Little Or No Exercise",
-    "Light:Exercise 1-3times/week",
-    "Moderately Active:Exercise 4-5times/week",
-    "Very Active:Exercise 6-7times/week",
-    "Extra Active:Very Intense Exercise Daily"
-  ];
-  String valueForActivity = "Basal Metabollic Rate";
-  // List goalList = [
-  //   "Maintain Weight",
-  //   "Mild Weight Loss 0.5lb/week",
-  //   "Weight Loss 1lb/week",
-  //   "Extreme Weight Loss 2lb/week",
-  //   "Mild Weight Gain 0.5lb/week",
-  //   "Weight Gain 1lb/week",
-  //   "Extreme Weight Gain 2lb/week"
-  // ];
-  // String valueForGoal = "Maintain Weight";
   int gender = 1;
-  double _bmr = 0.0;
-  double _tdee = 0.0;
+  double _ideal = 0.0;
   DateTime date = DateTime(1900);
   @override
   Widget build(BuildContext context) {
@@ -106,50 +85,6 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
             borderRadius: BorderRadius.circular(10),
           )),
     );
-    final weight = TextFormField(
-      autofocus: false,
-      controller: weightController,
-      keyboardType: TextInputType.number,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some text';
-        }
-        return null;
-      },
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-          labelText: 'Weight in kg',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          )),
-    );
-    final activity = Container(
-      child: DropdownButton(
-        value: valueForActivity.isNotEmpty ? valueForActivity : null,
-        hint: Text("Choose One Activity"),
-        dropdownColor: Colors.lightBlue.shade200,
-        icon: Icon(Icons.arrow_drop_down),
-        iconSize: 17,
-        isExpanded: true,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 12,
-        ),
-        onChanged: (newValue) {
-          setState(() {
-            valueForActivity = newValue as String;
-          });
-        },
-        items: activityList.map((valueItem) {
-          return DropdownMenuItem(
-            value: valueItem,
-            child: Text(valueItem),
-          );
-        }).toList(),
-      ),
-    );
-
     final calculateButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
@@ -159,64 +94,27 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           if (gender == 1) {
-            double height = double.parse(heightController.text);
-            double weight = double.parse(weightController.text);
+            double height = double.parse(heightController.text) * 0.03937;
+            print(height);
             double age = double.parse(ageController.text);
-            double bmr = 10.0 * weight + 6.25 * height - 5 * age + 5;
-            _bmr = bmr;
-            print(_bmr);
-            print(valueForActivity);
-            if (valueForActivity == "Basal Metabollic Rate") {
-              _tdee = 0.0;
-            } else if (valueForActivity == "Sedentary: Little Or No Exercise") {
-              _tdee = bmr * 1.2;
-              print(_tdee);
-            } else if (valueForActivity == "Light:Exercise 1-3times/week") {
-              _tdee = bmr * 1.375;
-              print(_tdee);
-            } else if (valueForActivity == "Moderately Active:Exercise 4-5times/week") {
-              _tdee = bmr * 1.55;
-              print(_tdee);
-            } else if (valueForActivity == "Very Active:Exercise 6-7times/week") {
-              _tdee = bmr * 1.725;
-              print(_tdee);
+            if (height > 5) {
+              _ideal = 50 + 2.3 * (height - 5);
             } else {
-              _tdee = bmr * 1.9;
-              print(_tdee);
+              _ideal = 50.0;
             }
+            //double bf = (495 / (1.0324 - 0.19077 * log(waist - neck) +  0.15456 * log(height))) - 450;
             setState(() {});
           } else {
-            double height = double.parse(heightController.text);
-            double weight = double.parse(weightController.text);
+            double height = double.parse(heightController.text) * 0.03937;
             double age = double.parse(ageController.text);
-            print(height);
-            print(weight);
-            print(age);
-            double bmr = 10.0 * weight + 6.25 * height - 5 * age - 161;
-            _bmr = bmr;
-            print(_bmr);
-            print(valueForActivity);
-            if (valueForActivity == "Basal Metabollic Rate") {
-              _tdee = 0.0;
-            } else if (valueForActivity == "Sedentary: Little Or No Exercise") {
-              _tdee = bmr * 1.2;
-              print(_tdee);
-            } else if (valueForActivity == "Light:Exercise 1-3times/week") {
-              _tdee = bmr * 1.375;
-              print(_tdee);
-            } else if (valueForActivity == "Moderately Active:Exercise 4-5times/week") {
-              _tdee = bmr * 1.55;
-              print(_tdee);
-            } else if (valueForActivity == "Very Active:Exercise 6-7times/week") {
-              _tdee = bmr * 1.725;
-              print(_tdee);
+            if (height > 5) {
+              _ideal = 45.5 + 2.3 * (height - 5);
             } else {
-              _tdee = bmr * 1.9;
-              print(_tdee);
+              _ideal = 45.5;
             }
+            //double bf = (495 / (1.0324 - 0.19077 * log(waist - neck) +  0.15456 * log(height))) - 450;
             setState(() {});
           }
-          print(gender);
         },
         child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
       ),
@@ -226,7 +124,7 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
         borderRadius: BorderRadius.circular(30),
         color: Colors.redAccent,
         child: Text(
-          _tdee == 0.0 ? "Enter Value" : "The estimated TDEE or body weight maintenance energy requirement is ${_tdee.toStringAsFixed(4)} Calories per day.",
+          _ideal == 0.0 ? "Enter Value" : "Ideal weight : ${_ideal.toStringAsFixed(4)}",
           style: TextStyle(
             color: Colors.white,
             fontSize: 19.4,
@@ -269,10 +167,6 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
                           dobField,
                           SizedBox(height: 10),
                           height,
-                          SizedBox(height: 15),
-                          weight,
-                          SizedBox(height: 15),
-                          activity,
                           SizedBox(height: 15),
                           calculateButton,
                           SizedBox(height: 15),
