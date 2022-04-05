@@ -24,6 +24,8 @@ class _CarbFormPageState extends State<CarbFormPage> {
   String valueForActivity = "Basal Metabollic Rate";
   int gender = 1;
   DateTime date = DateTime(1900);
+  double _finalCalorie = 0;
+
   @override
   Widget build(BuildContext context) {
     final genderField = Column(
@@ -61,7 +63,7 @@ class _CarbFormPageState extends State<CarbFormPage> {
     );
     final dobField = TextFormField(
       autofocus: false,
-      controller: heightController,
+      controller: ageController,
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -145,8 +147,13 @@ class _CarbFormPageState extends State<CarbFormPage> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {},
-        child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        onPressed: calculateCalorie,
+        child: Text("Calculate",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
     final backButton = Material(
@@ -157,37 +164,139 @@ class _CarbFormPageState extends State<CarbFormPage> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Dashboard()));
         },
-        child: Text("Back", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("Back",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
+
+    final Finalresult = Material(
+        elevation: 5,
+        borderRadius: BorderRadius.circular(30),
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Text(
+            "For Maintaining Weight :" +
+                (calorieResult(0, 0.40)).toStringAsFixed(4) +
+                " to " +
+                (calorieResult(0, 0.70)).toStringAsFixed(4) +
+                " grams\n\nFor mild weight loss(0.5 lb/week) :" +
+                (calorieResult(250, 0.40)).toStringAsFixed(4) +
+                " to " +
+                (calorieResult(250, 0.70)).toStringAsFixed(4) +
+                " grams\n\nFor weight loss(1lb/week) :" +
+                (calorieResult(500, 0.40)).toStringAsFixed(4) +
+                " to "+
+                (calorieResult(500, 0.70)).toStringAsFixed(4) +
+                " grams\n\nFor extreme weight loss(2lb/week) :" +
+                (calorieResult(1000, 0.40)).toStringAsFixed(4) +
+                " to "+
+                (calorieResult(1000, 0.70)).toStringAsFixed(4)+
+                " grams",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ));
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
           child: SingleChildScrollView(
               child: Container(
                   color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: Form(
-                        key: _formKey,
-                        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-                          genderField,
-                          SizedBox(height: 10),
-                          dobField,
-                          SizedBox(height: 10),
-                          height,
-                          SizedBox(height: 15),
-                          weight,
-                          SizedBox(height: 15),
-                          activity,
-                          SizedBox(height: 15),
-                          calculateButton,
-                          SizedBox(height: 15),
-                          backButton,
-                        ])),
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Form(
+                          key: _formKey,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                genderField,
+                                SizedBox(height: 10),
+                                dobField,
+                                SizedBox(height: 10),
+                                height,
+                                SizedBox(height: 15),
+                                weight,
+                                SizedBox(height: 15),
+                                activity,
+                                SizedBox(height: 15),
+                                calculateButton,
+                                SizedBox(height: 15),
+                                backButton,
+                                SizedBox(height: 15),
+                                Finalresult
+                              ])),
+                    ),
                   ))),
         ));
+  }
+
+  double calorieResult(double calorie_factor, double percent_factor){
+    return ((_finalCalorie-calorie_factor)*percent_factor*0.25);
+  }
+
+  void calculateCalorie() {
+    double _height = double.parse(heightController.text);
+    double _weight = double.parse(weightController.text);
+    double _age = double.parse(ageController.text);
+    double _BMR, _maintainence;
+    _BMR = _maintainence = 0;
+    if (gender == 1) {
+      _BMR = 10 * _weight + 6.25 * _height - 5 * _age + 5;
+    } else if (gender == 2) {
+      _BMR = 10 * _weight + 6.25 * _height - 5 * _age - 161;
+    }
+    switch (valueForActivity) {
+      case "Basal Metabollic Rate":
+        {
+          _maintainence = _BMR;
+        }
+        break;
+      case "Sedentary: Little Or No Exercise":
+        {
+          _maintainence = _BMR * 1.22;
+        }
+        break;
+      case "Light:Exercise 1-3times/week":
+        {
+          _maintainence = _BMR * 1.375;
+        }
+        break;
+      case "Moderate:Exercise 4-5times/week":
+        {
+          _maintainence = _BMR * 1.465;
+        }
+        break;
+      case "Active:Exercise 3-4times/week":
+        {
+          _maintainence = _BMR * 1.549;
+        }
+        break;
+      case "Very Active:Exercise 6-7times/week":
+        {
+          _maintainence = _BMR * 1.725;
+        }
+        break;
+      case "Extra Active:Very Intense Exercise Daily":
+        {
+          _maintainence = _BMR * 1.9;
+        }
+        break;
+    }
+    _finalCalorie = _maintainence;
+    setState(() {});
   }
 }
