@@ -96,7 +96,7 @@ class _IdlWtFormPageState extends State<IdlWtFormPage> {
         onPressed: () {
           if (gender == 1) {
             double height = double.parse(heightController.text) / 30.48;
-            print(height);
+            // print(height);
             double age = double.parse(ageController.text);
             if (height > 5) {
               double extra = height - 5;
@@ -127,20 +127,25 @@ class _IdlWtFormPageState extends State<IdlWtFormPage> {
                 fontWeight: FontWeight.bold)),
       ),
     );
+
     final resultSection = Material(
         elevation: 5,
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.redAccent,
-        child: Text(
-          _ideal == 0.0
-              ? "Enter Value"
-              : "Ideal weight : ${_ideal.toStringAsFixed(4)}",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 19.4,
-            fontWeight: FontWeight.w500,
+        child: MaterialButton(
+          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          onPressed: () {},
+          minWidth: MediaQuery.of(context).size.width,
+          child: Text(
+            _ideal == 0.0
+                ? "Enter Value"
+                : "Ideal weight : ${_ideal.toStringAsFixed(4)}",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 19.4,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ));
+
     final navbar = AppBar(
       leading: IconButton(
         icon: Icon(Icons.arrow_back),

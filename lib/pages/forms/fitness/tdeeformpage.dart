@@ -21,20 +21,12 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
     "Extra Active:Very Intense Exercise Daily"
   ];
   String valueForActivity = "Basal Metabollic Rate";
-  // List goalList = [
-  //   "Maintain Weight",
-  //   "Mild Weight Loss 0.5lb/week",
-  //   "Weight Loss 1lb/week",
-  //   "Extreme Weight Loss 2lb/week",
-  //   "Mild Weight Gain 0.5lb/week",
-  //   "Weight Gain 1lb/week",
-  //   "Extreme Weight Gain 2lb/week"
-  // ];
-  // String valueForGoal = "Maintain Weight";
+
   int gender = 1;
   double _bmr = 0.0;
   double _tdee = 0.0;
   DateTime date = DateTime(1900);
+
   @override
   Widget build(BuildContext context) {
     final genderField = Column(
@@ -167,17 +159,19 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
             print(_bmr);
             print(valueForActivity);
             if (valueForActivity == "Basal Metabollic Rate") {
-              _tdee = 0.0;
+              _tdee = bmr;
             } else if (valueForActivity == "Sedentary: Little Or No Exercise") {
               _tdee = bmr * 1.2;
               print(_tdee);
             } else if (valueForActivity == "Light:Exercise 1-3times/week") {
               _tdee = bmr * 1.375;
               print(_tdee);
-            } else if (valueForActivity == "Moderately Active:Exercise 4-5times/week") {
+            } else if (valueForActivity ==
+                "Moderately Active:Exercise 4-5times/week") {
               _tdee = bmr * 1.55;
               print(_tdee);
-            } else if (valueForActivity == "Very Active:Exercise 6-7times/week") {
+            } else if (valueForActivity ==
+                "Very Active:Exercise 6-7times/week") {
               _tdee = bmr * 1.725;
               print(_tdee);
             } else {
@@ -204,10 +198,12 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
             } else if (valueForActivity == "Light:Exercise 1-3times/week") {
               _tdee = bmr * 1.375;
               print(_tdee);
-            } else if (valueForActivity == "Moderately Active:Exercise 4-5times/week") {
+            } else if (valueForActivity ==
+                "Moderately Active:Exercise 4-5times/week") {
               _tdee = bmr * 1.55;
               print(_tdee);
-            } else if (valueForActivity == "Very Active:Exercise 6-7times/week") {
+            } else if (valueForActivity ==
+                "Very Active:Exercise 6-7times/week") {
               _tdee = bmr * 1.725;
               print(_tdee);
             } else {
@@ -218,27 +214,41 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
           }
           print(gender);
         },
-        child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("Calculate",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
+
     final resultSection = Material(
         elevation: 5,
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.redAccent,
-        child: Text(
-          _tdee == 0.0 ? "Enter Value" : "The estimated TDEE or body weight maintenance energy requirement is ${_tdee.toStringAsFixed(4)} Calories per day.",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 19.4,
-            fontWeight: FontWeight.w500,
+        child: MaterialButton(
+          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          onPressed: () {},
+          minWidth: MediaQuery.of(context).size.width,
+          child: Text(
+            _tdee == 0.0
+                ? "Enter Value"
+                : "The estimated TDEE or body weight maintenance energy requirement is ${_tdee.toStringAsFixed(4)} Calories per day.",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ));
+
     final navbar = AppBar(
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
         tooltip: 'Menu Icon',
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Dashboard()));
         },
       ),
       title: Text(
@@ -263,21 +273,24 @@ class _TdeeFormPageState extends State<TdeeFormPage> {
                     padding: const EdgeInsets.all(30.0),
                     child: Form(
                         key: _formKey,
-                        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-                          genderField,
-                          SizedBox(height: 10),
-                          dobField,
-                          SizedBox(height: 10),
-                          height,
-                          SizedBox(height: 15),
-                          weight,
-                          SizedBox(height: 15),
-                          activity,
-                          SizedBox(height: 15),
-                          calculateButton,
-                          SizedBox(height: 15),
-                          resultSection,
-                        ])),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              genderField,
+                              SizedBox(height: 10),
+                              dobField,
+                              SizedBox(height: 10),
+                              height,
+                              SizedBox(height: 15),
+                              weight,
+                              SizedBox(height: 15),
+                              activity,
+                              SizedBox(height: 15),
+                              calculateButton,
+                              SizedBox(height: 15),
+                              resultSection,
+                            ])),
                   ))),
         ));
   }
