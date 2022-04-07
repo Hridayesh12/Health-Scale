@@ -14,6 +14,7 @@ class _IdlWtFormPageState extends State<IdlWtFormPage> {
   int gender = 1;
   double _ideal = 0.0;
   DateTime date = DateTime(1900);
+
   @override
   Widget build(BuildContext context) {
     final genderField = Column(
@@ -94,21 +95,23 @@ class _IdlWtFormPageState extends State<IdlWtFormPage> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           if (gender == 1) {
-            double height = double.parse(heightController.text) * 0.03937;
+            double height = double.parse(heightController.text) / 30.48;
             print(height);
             double age = double.parse(ageController.text);
             if (height > 5) {
-              _ideal = 50 + 2.3 * (height - 5);
+              double extra = height - 5;
+              _ideal = 50 + (2.3 * extra * 12);
             } else {
               _ideal = 50.0;
             }
             //double bf = (495 / (1.0324 - 0.19077 * log(waist - neck) +  0.15456 * log(height))) - 450;
             setState(() {});
           } else {
-            double height = double.parse(heightController.text) * 0.03937;
+            double height = double.parse(heightController.text) / 30.48;
             double age = double.parse(ageController.text);
             if (height > 5) {
-              _ideal = 45.5 + 2.3 * (height - 5);
+              double extra = height - 5;
+              _ideal = 45.5 + (2.3 * extra * 12);
             } else {
               _ideal = 45.5;
             }
@@ -116,7 +119,12 @@ class _IdlWtFormPageState extends State<IdlWtFormPage> {
             setState(() {});
           }
         },
-        child: Text("Calculate", textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text("Calculate",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
       ),
     );
     final resultSection = Material(
@@ -124,7 +132,9 @@ class _IdlWtFormPageState extends State<IdlWtFormPage> {
         borderRadius: BorderRadius.circular(30),
         color: Colors.redAccent,
         child: Text(
-          _ideal == 0.0 ? "Enter Value" : "Ideal weight : ${_ideal.toStringAsFixed(4)}",
+          _ideal == 0.0
+              ? "Enter Value"
+              : "Ideal weight : ${_ideal.toStringAsFixed(4)}",
           style: TextStyle(
             color: Colors.white,
             fontSize: 19.4,
@@ -136,7 +146,8 @@ class _IdlWtFormPageState extends State<IdlWtFormPage> {
         icon: Icon(Icons.arrow_back),
         tooltip: 'Menu Icon',
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Dashboard()));
         },
       ),
       title: Text(
@@ -161,17 +172,20 @@ class _IdlWtFormPageState extends State<IdlWtFormPage> {
                     padding: const EdgeInsets.all(30.0),
                     child: Form(
                         key: _formKey,
-                        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-                          genderField,
-                          SizedBox(height: 10),
-                          dobField,
-                          SizedBox(height: 10),
-                          height,
-                          SizedBox(height: 15),
-                          calculateButton,
-                          SizedBox(height: 15),
-                          resultSection,
-                        ])),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              genderField,
+                              SizedBox(height: 10),
+                              dobField,
+                              SizedBox(height: 10),
+                              height,
+                              SizedBox(height: 15),
+                              calculateButton,
+                              SizedBox(height: 15),
+                              resultSection,
+                            ])),
                   ))),
         ));
   }
