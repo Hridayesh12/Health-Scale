@@ -176,29 +176,6 @@ class _CalorieFormPageState extends State<CalorieFormPage> {
       ),
     );
 
-    // final Finalresult = Material(
-    //     elevation: 5,
-    //     child: MaterialButton(
-    //       padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-    //       onPressed: () {},
-    //       minWidth: MediaQuery.of(context).size.width,
-    //       child: Text(
-    //         "For Maintaining Weight :" +
-    //             (_finalCalorie).toStringAsFixed(4) +
-    //             "\n\nFor mild weight loss(0.5 lb/week) :" +
-    //             (_finalCalorie - 250).toStringAsFixed(4) +
-    //             "\n\nFor weight loss(1lb/week) :" +
-    //             (_finalCalorie - 500).toStringAsFixed(4) +
-    //             "\n\nFor extreme weight loss(2lb/week) :" +
-    //             (_finalCalorie - 1000).toStringAsFixed(4),
-    //         style: TextStyle(
-    //           color: Colors.black,
-    //           fontSize: 19.4,
-    //           fontWeight: FontWeight.w500,
-    //         ),
-    //       ),
-    //     ));
-
     final Finalresult = Material(
         elevation: 5,
         borderRadius: BorderRadius.circular(30),
@@ -206,17 +183,19 @@ class _CalorieFormPageState extends State<CalorieFormPage> {
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Text(
-            "For Maintaining Weight :" +
-                (_finalCalorie).toStringAsFixed(4) +
-                "\n\nFor mild weight loss(0.5 lb/week) :" +
-                (_finalCalorie - 250).toStringAsFixed(4) +
-                "\n\nFor weight loss(1lb/week) :" +
-                (_finalCalorie - 500).toStringAsFixed(4) +
-                "\n\nFor extreme weight loss(2lb/week) :" +
-                (_finalCalorie - 1000).toStringAsFixed(4),
+            _finalCalorie == 0.0
+                ? "Enter Value"
+                : "For Maintaining Weight : " +
+                    (_finalCalorie).toStringAsFixed(4) +
+                    "\n\nFor mild weight loss(0.5 lb/week) : " +
+                    (_finalCalorie - 250).toStringAsFixed(4) +
+                    "\n\nFor weight loss(1lb/week) : " +
+                    (_finalCalorie - 500).toStringAsFixed(4) +
+                    "\n\nFor extreme weight loss(2lb/week) : " +
+                    (_finalCalorie - 1000).toStringAsFixed(4),
             style: TextStyle(
               color: Colors.black,
-              fontSize: 14,
+              fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
           ),

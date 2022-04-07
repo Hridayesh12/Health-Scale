@@ -182,30 +182,32 @@ class _CarbFormPageState extends State<CarbFormPage> {
         color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: Text(
-            "For Maintaining Weight :" +
-                (calorieResult(0, 0.40)).toStringAsFixed(4) +
-                " to " +
-                (calorieResult(0, 0.70)).toStringAsFixed(4) +
-                " grams\n\nFor mild weight loss(0.5 lb/week) :" +
-                (calorieResult(250, 0.40)).toStringAsFixed(4) +
-                " to " +
-                (calorieResult(250, 0.70)).toStringAsFixed(4) +
-                " grams\n\nFor weight loss(1lb/week) :" +
-                (calorieResult(500, 0.40)).toStringAsFixed(4) +
-                " to "+
-                (calorieResult(500, 0.70)).toStringAsFixed(4) +
-                " grams\n\nFor extreme weight loss(2lb/week) :" +
-                (calorieResult(1000, 0.40)).toStringAsFixed(4) +
-                " to "+
-                (calorieResult(1000, 0.70)).toStringAsFixed(4)+
-                " grams",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          child: _finalCalorie == 0.0
+              ? Text("Enter Value")
+              : Text(
+                  "For Maintaining Weight :" +
+                      (calorieResult(0, 0.40)).toStringAsFixed(4) +
+                      " to " +
+                      (calorieResult(0, 0.70)).toStringAsFixed(4) +
+                      " grams\n\nFor mild weight loss(0.5 lb/week) :" +
+                      (calorieResult(250, 0.40)).toStringAsFixed(4) +
+                      " to " +
+                      (calorieResult(250, 0.70)).toStringAsFixed(4) +
+                      " grams\n\nFor weight loss(1lb/week) :" +
+                      (calorieResult(500, 0.40)).toStringAsFixed(4) +
+                      " to " +
+                      (calorieResult(500, 0.70)).toStringAsFixed(4) +
+                      " grams\n\nFor extreme weight loss(2lb/week) :" +
+                      (calorieResult(1000, 0.40)).toStringAsFixed(4) +
+                      " to " +
+                      (calorieResult(1000, 0.70)).toStringAsFixed(4) +
+                      " grams",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
         ));
 
     return Scaffold(
@@ -244,8 +246,8 @@ class _CarbFormPageState extends State<CarbFormPage> {
         ));
   }
 
-  double calorieResult(double calorie_factor, double percent_factor){
-    return ((_finalCalorie-calorie_factor)*percent_factor*0.25);
+  double calorieResult(double calorie_factor, double percent_factor) {
+    return ((_finalCalorie - calorie_factor) * percent_factor * 0.25);
   }
 
   void calculateCalorie() {

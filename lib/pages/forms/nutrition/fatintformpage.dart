@@ -176,98 +176,180 @@ class _FatIntFormPageState extends State<FatIntFormPage> {
       ),
     );
 
+    final TableResult = Table(
+      // defaultColumnWidth: FixedColumnWidth(120.0),
+      border: TableBorder.all(
+          color: Colors.black, style: BorderStyle.solid, width: 2),
+      children: [
+        TableRow(children: [
+          Column(children: [
+            Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+                child: Text('Parameter',
+                    style: TextStyle(fontWeight: FontWeight.bold)))
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text('Fat Allowance',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text('Saturated Fat',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text('Saturated Fat allowance to reduce Heart Disease',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            )
+          ]),
+        ]),
+        TableRow(children: [
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text('For Maintaining Weight :'),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text((calorieResult(0, 0.20)).toStringAsFixed(4) +
+                  " to " +
+                  (calorieResult(0, 0.35)).toStringAsFixed(4) +
+                  " grams"),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child:
+                  Text((calorieResult(0, 0.10)).toStringAsFixed(4) + " grams"),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child:
+                  Text((calorieResult(0, 0.07)).toStringAsFixed(4) + " grams"),
+            )
+          ]),
+        ]),
+        TableRow(children: [
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text('For mild weight loss(0.5 lb/week) :'),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text((calorieResult(250, 0.20)).toStringAsFixed(4) +
+                  " to " +
+                  (calorieResult(250, 0.35)).toStringAsFixed(4) +
+                  " grams"),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text(
+                  (calorieResult(250, 0.10)).toStringAsFixed(4) + " grams"),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text(
+                  (calorieResult(250, 0.07)).toStringAsFixed(4) + " grams"),
+            )
+          ]),
+        ]),
+        TableRow(children: [
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text('For weight loss(1lb/week) :'),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text((calorieResult(500, 0.20)).toStringAsFixed(4) +
+                  " to " +
+                  (calorieResult(500, 0.35)).toStringAsFixed(4) +
+                  " grams"),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text(
+                  (calorieResult(500, 0.10)).toStringAsFixed(4) + " grams"),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text(
+                  (calorieResult(500, 0.07)).toStringAsFixed(4) + " grams"),
+            )
+          ]),
+        ]),
+        TableRow(children: [
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text('For extreme weight loss(2lb/week) :'),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text((calorieResult(1000, 0.20)).toStringAsFixed(4) +
+                  " to " +
+                  (calorieResult(1000, 0.35)).toStringAsFixed(4) +
+                  " grams"),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text(
+                  (calorieResult(1000, 0.10)).toStringAsFixed(4) + " grams"),
+            )
+          ]),
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+              child: Text(
+                  (calorieResult(1000, 0.07)).toStringAsFixed(4) + " grams"),
+            )
+          ]),
+        ]),
+      ],
+    );
+
+    // final Finalresult = Material(
+    //     elevation: 5,
+    //     borderRadius: BorderRadius.circular(30),
+    //     color: Colors.white,
+    //     child: Padding(
+    //       padding: const EdgeInsets.all(15.0),
+    //       child: _finalCalorie == 0.0 ? Text("Enter Value") : TableResult,
+    //     ));
+
     final Finalresult = Material(
-        elevation: 5,
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Table(
-            // defaultColumnWidth: FixedColumnWidth(120.0),
-            border: TableBorder.all(
-                color: Colors.black, style: BorderStyle.solid, width: 2),
-            children: [
-              TableRow(children: [
-                Column(children: [
-                  Text('Parameter', style: TextStyle(fontWeight: FontWeight.bold))
-                ]),
-                Column(children: [
-                  Text('Fat Allowance', style: TextStyle(fontWeight: FontWeight.bold))
-                ]),
-                Column(children: [
-                  Text('Saturated Fat', style: TextStyle(fontWeight: FontWeight.bold))
-                ]),
-                Column(children: [
-                  Text('Saturated Fat allowance to reduce Heart Disease',
-                      style: TextStyle(fontWeight: FontWeight.bold)
-                  )
-                ]),
-              ]),
-              TableRow(children: [
-                Column(children: [Text('For Maintaining Weight :')]),
-                Column(children: [
-                  Text((calorieResult(0, 0.20)).toStringAsFixed(4) +
-                      " to " +
-                      (calorieResult(0, 0.35)).toStringAsFixed(4) +
-                      " grams")
-                ]),
-                Column(children: [
-                  Text((calorieResult(0, 0.10)).toStringAsFixed(4) + " grams")
-                ]),
-                Column(children: [
-                  Text((calorieResult(0, 0.07)).toStringAsFixed(4) + " grams")
-                ]),
-              ]),
-              TableRow(children: [
-                Column(children: [Text('For mild weight loss(0.5 lb/week) :')]),
-                Column(children: [
-                  Text((calorieResult(250, 0.20)).toStringAsFixed(4) +
-                      " to " +
-                      (calorieResult(250, 0.35)).toStringAsFixed(4) +
-                      " grams")
-                ]),
-                Column(children: [
-                  Text((calorieResult(250, 0.10)).toStringAsFixed(4) + " grams")
-                ]),
-                Column(children: [
-                  Text((calorieResult(250, 0.07)).toStringAsFixed(4) + " grams")
-                ]),
-              ]),
-              TableRow(children: [
-                Column(children: [Text('For weight loss(1lb/week) :')]),
-                Column(children: [
-                  Text((calorieResult(500, 0.20)).toStringAsFixed(4) +
-                      " to " +
-                      (calorieResult(500, 0.35)).toStringAsFixed(4) +
-                      " grams")
-                ]),
-                Column(children: [
-                  Text((calorieResult(500, 0.10)).toStringAsFixed(4) + " grams")
-                ]),
-                Column(children: [
-                  Text((calorieResult(500, 0.07)).toStringAsFixed(4) + " grams")
-                ]),
-              ]),
-              TableRow(children: [
-                Column(children: [Text('For extreme weight loss(2lb/week) :')]),
-                Column(children: [
-                  Text((calorieResult(1000, 0.20)).toStringAsFixed(4) +
-                      " to " +
-                      (calorieResult(1000, 0.35)).toStringAsFixed(4) +
-                      " grams")
-                ]),
-                Column(children: [
-                  Text(
-                      (calorieResult(1000, 0.10)).toStringAsFixed(4) + " grams")
-                ]),
-                Column(children: [
-                  Text(
-                      (calorieResult(1000, 0.07)).toStringAsFixed(4) + " grams")
-                ]),
-              ]),
-            ],
-          ),
-        ));
+      child: _finalCalorie == 0.0 ? Text("Enter Value") : TableResult,
+    );
 
     return Scaffold(
         backgroundColor: Colors.white,
